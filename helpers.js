@@ -56,7 +56,6 @@ module.exports = {
         info.file = data.current_file;
         return function(msg, ...highlights) {
             data.errors.push(`${msg}:\n${reportify(c.red, info, 1, highlights)}`);
-            //process.exit(1);
         }
     },
 
@@ -130,7 +129,7 @@ module.exports = {
         console.info(`changing into "${new_dir}"`);
         process.chdir(new_dir);
         try {
-            await fn();
+            return await fn();
         } catch(e) {
             throw e;
         } finally {
@@ -165,7 +164,7 @@ module.exports = {
                 if (code === 0) {
                     resolve(stdout.join(""));
                 } else {
-                    reject(`openssl failed with code ${code}: stderr -> ${stderr.join("")}`);
+                    reject(`openssl failed with code ${code}: output -> ${stdout.join("")}, ${stderr.join("")}`);
                 }
             });
         });

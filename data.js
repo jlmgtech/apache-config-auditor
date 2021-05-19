@@ -1,12 +1,9 @@
 const c = require("ansi-colors");
-const errors = [];
-const warnings = [];
-
 let current_file = "";
 
-module.exports = {
-    errors,
-    warnings,
+const store = {
+    errors: [],
+    warnings: [],
     filequeue: {},
     vhosts: {},
 
@@ -20,28 +17,35 @@ module.exports = {
 
     report() {
 
-        if (warnings.length) {
-            console.log(c.yellow(`${warnings.length} warnings: `) + warnings.join("\n"));
+        //if (store.warnings.length) {
+        //    console.log(c.yellow(`${store.warnings.length} warnings: `) + store.warnings.join("\n"));
+        //}
+
+        if (store.errors.length) {
+            console.log(c.red(`${store.errors.length} ERRORS: `) + store.errors.join("\n"));
         }
 
-        if (errors.length) {
-            console.log(c.red(`${errors.length} ERRORS: `) + errors.join("\n"));
-        }
-
-        if (errors.length && warnings.length) {
-            console.log(c.red(`DONE with ${errors.length} errors and ${warnings.length} warnings`));
-        } else if (errors.length) {
-            console.log(c.red(`DONE with ${errors.length} errors`));
-        } else if (warnings.length) {
-            console.log(c.yellow(`DONE with ${warnings.length} warnings`));
+        if (store.errors.length && store.warnings.length) {
+            console.log(c.red(`DONE with ${store.errors.length} errors and ${store.warnings.length} warnings`));
+        } else if (store.errors.length) {
+            console.log(c.red(`DONE with ${store.errors.length} errors`));
+        } else if (store.warnings.length) {
+            console.log(c.yellow(`DONE with ${store.warnings.length} warnings`));
         } else {
             console.log(c.green(`DONE with 0 errors and 0 warnings`));
         }
-        if (errors.length || warnings.length) {
+        if (store.errors.length || store.warnings.length) {
             console.log(c.cyan("\nsee above for more info"));
         }
 
-        return errors.length + warnings.length;
+        const success = store.errors.length === 0;
+        store.errors = [];
+        store.warnings = [];
+        store.filequeue = {};
+        store.vhosts = {};
+        return success;
     },
 
 };
+
+module.exports = store;

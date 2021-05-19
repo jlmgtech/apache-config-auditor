@@ -201,12 +201,10 @@ async function process_VirtualHost(hosts) {
                 ssl_err(`Could not check modulus of ssl files: ${e.message}`, "sslcertificatefile", "sslcertificatekeyfile");
             }
 
-            // TODO: for added protection, use openssl verify option...
-            // from here:
-            // https://unix.stackexchange.com/questions/16226/how-can-i-verify-ssl-certificates-on-the-command-line
             try {
                 if (typeof sslcacertificatefile === "string" && typeof sslcertificatefile === "string") {
 
+                    // https://unix.stackexchange.com/questions/16226/how-can-i-verify-ssl-certificates-on-the-command-line
                     const result = await fetch_openssl([
                         "verify", "-verbose", "-x509_strict", 
                         "-CAfile", sslcacertificatefile,
@@ -215,12 +213,10 @@ async function process_VirtualHost(hosts) {
                     ]);
                 } else {
                     ssl_warn("Could not verify certificate for this host because it or the CA cert was unspecified", "sslcacertificatefile");
+		    console.log("To help troubleshoot SSL prolems -> https://decoder.link/result/7e565dd7cecee0695ed6789fc21908f551697eee");
                 }
             } catch(e) {
-                const choice = await question(`${e}: would you like to continue? y/N: `);
-                if (choice.toLowerCase() !== "y") {
-                    process.exit(1);
-                }
+                data.errors.push(c.red("CRITICAL ERROR: " + e));
             }
 
         }
