@@ -1,17 +1,20 @@
 {
-  "name": "apacheparser",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ansi-colors": "^4.1.1",
-    "apacheconf": "0.0.5",
-    "glob": "^7.1.6",
-    "progress": "^2.0.3"
-  }
+    "name": "apacheparser",
+    "version": "1.0.1",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": {
+        "audit-config": "./bin/index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "ansi-colors": "^4.1.1",
+        "apacheconf": "0.0.5",
+        "glob": "^7.1.6",
+        "progress": "^2.0.3"
+    }
 }
