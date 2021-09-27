@@ -16,13 +16,13 @@ const os = require("os");
 // TODO - break code down into modules
 // TODO - test faulty configurations
 
-module.exports = async function main() {
+module.exports = async function main(confdir='/etc/httpd') {
 
     if (os.userInfo().uid !== 0) {
         data.warnings.push(c.yellow("Not running as root! This report may be incorrect!"));
     }
 
-    return await with_dir('/etc/httpd', async () => {
+    return await with_dir(confdir, async () => {
         try {
             const configtest = await fetch_configtest();
             console.log("apachectl configtest looks OK");
