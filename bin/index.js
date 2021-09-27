@@ -4,5 +4,6 @@ const auditConfig = require("../index.js");
 console.log("auditing apache config...");
 
 (async function main() {
-    await auditConfig();
+    const [config_path] = process.argv.slice(2);
+    await auditConfig(config_path);
 })();
