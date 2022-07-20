@@ -1,4 +1,5 @@
 const {spawn} = require('child_process');
+const os = require("os");
 const c = require("ansi-colors");
 const apacheconf = require('apacheconf');
 const fs = require("fs");
@@ -32,9 +33,7 @@ function reportify(color, obj, depth=0, highlights=[]) {
 
 module.exports = {
 
-    is_valid_ip(ipaddr) {
-        return ["172.24.32.240", "184.106.64.157"].includes(ipaddr);
-    },
+    get_valid_ips: () => ["*", ...Object.values(os.networkInterfaces()).flat().map(n => n.address)],
 
     delay(ms) {
         return new Promise((res, rej) => {

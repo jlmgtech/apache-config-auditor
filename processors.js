@@ -3,23 +3,22 @@ const c = require("ansi-colors");
 const PBar = require("./PBar.js");
 const path = require("path");
 const {spawn} = require('child_process');
-const {parseconf} = require("./helpers.js");
 const {
     get_keymod,
     get_crtmod,
     get_csrmod,
 } = require("./sslutils.js");
-
 const {
     aglob,
     bombout,
-    is_valid_ip,
+    fetch_openssl,
+    get_valid_ips,
     isaccessible,
     isdir,
     isfile,
+    parseconf,
     question,
     warnout,
-    fetch_openssl,
 } = require("./helpers.js");
 
 function unpack_value(element) {
@@ -56,13 +55,17 @@ async function process_VirtualHost(hosts) {
     const pbar = new PBar(hosts.length);
     for (const host of hosts) {
 
-        const [ipaddr, port] = host.$args.split(":");
+        let [ipaddr, port] = host.$args.split(":");
+        if (typeof ipaddr !== "string") {
+            ipaddr = "*";
+        }
         if (ipaddr === "_default_") {
             continue; // skip default config: it will be caught by configtest.
         }
+
         // TODO - different unpack calls for different expected types.
         const serveradmin = unpack_value(host.ServerAdmin);
-        const servername = unpack_value(host.ServerName);
+        const servername = unpack_value(host.ServerName) ?? "default";
         const serveralias = unpack_value(host.ServerAlias);
         const documentroot = unpack_value(host.DocumentRoot);
         const sslengine = unpack_value(host.SSLEngine);
@@ -114,8 +117,11 @@ async function process_VirtualHost(hosts) {
 
         pbar.text(servername || ipaddr || '_default_');
 
-        if (!is_valid_ip(ipaddr)) {
-            host_warn(`ip address for "${servername}" is not set to ${c.cyan("172.24.32.240")} or ${c.cyan("184.106.64.157")}`, "ipaddr");
+        if (!get_valid_ips().includes(ipaddr)) {
+            const ips = get_valid_ips().map(ip => c.cyan(ip.toString()));
+            ips[ips.length-1] = "or " + ips[ips.length-1];
+            const ipstring = ips.join(", ");
+            host_warn(`ip address for "${servername}" is not set to ${ipstring}`, "ipaddr");
         }
 
         if (typeof sslengine === "string" && sslengine === "on") {

@@ -17,9 +17,9 @@ const store = {
 
     report() {
 
-        //if (store.warnings.length) {
-        //    console.log(c.yellow(`${store.warnings.length} warnings: `) + store.warnings.join("\n"));
-        //}
+        if (store.warnings.length) {
+            console.log(c.yellow(`${store.warnings.length} warnings: `) + store.warnings.join("\n"));
+        }
 
         if (store.errors.length) {
             console.log(c.red(`${store.errors.length} ERRORS: `) + store.errors.join("\n"));
