@@ -1,29 +1,26 @@
-# README #
+# Apache config parser 1.0.1 #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### Getting Started ###
 
-### What is this repository for? ###
+To run from this folder:
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+    npm i
+    sudo node bin/index.js [apache_base_path]
 
-### How do I get set up? ###
+Or to install and run:
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+    npm i
+    sudo npm link
+    sudo audit-config [apache_base_path]
 
-### Contribution guidelines ###
+Note: __ if `apache_base_path` isn't specified, it will default to `/etc/httpd` __
 
-* Writing tests
-* Code review
-* Other guidelines
+### Contributing ###
 
-### Who do I talk to? ###
+I was experimenting a lot with different coding styles when I wrote this
+originally, but I don't have time to go through the code and fix it or add
+features. Being such, I'm completely open to pull requests of any type.
 
-* Repo owner or admin
-* Other community or team contact
+### author ###
+
+james lay <james@jlmgtech.com>
